@@ -8,8 +8,8 @@ namespace LivrariaVirtual.Dominio.Dto
     {
         public int Id { get; set; }
         public string Livro { get; set; }
-        public DateTime DataPedido { get; set; }
-        public DateTime PrevisaoEntrega { get; set; }
+        public DateTimeOffset DataPedido { get; set; }
+        public DateTimeOffset PrevisaoEntrega { get; set; }
         public string Status { get; set; }
     }
 }

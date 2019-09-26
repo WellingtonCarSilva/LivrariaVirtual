@@ -8,7 +8,7 @@ namespace LivrariaVirtual.Dominio.Models
     {
         public int Id { get; set; }
         public int IdLivro { get; set; }
-        public DateTime DataPedido { get; set; }
+        public DateTimeOffset DataPedido { get; set; }
         public StatusPedido Status { get; set; }
         public int IdCliente { get; set; }
     }
