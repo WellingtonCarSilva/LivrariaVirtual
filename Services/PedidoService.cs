@@ -3,7 +3,6 @@ using LivrariaVirtual.Dominio.Models;
 using LivrariaVirtual.Dominio.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services

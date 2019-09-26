@@ -55,7 +55,10 @@ namespace LivrariaVirtual.Controllers
         [HttpPost("{id}/Comentario")]
         public async Task<ActionResult> ComentarioAsync([FromRoute] int id, [FromBody]string comentario)
         {
-            await livroService.ComentarioAsync(comentario, id);
+            if (string.IsNullOrEmpty(comentario))
+                throw new ArgumentNullException(nameof(comentario));
+
+            //await livroService.ComentarioAsync(comentario, id);
 
             return Ok();
         }
@@ -65,7 +68,7 @@ namespace LivrariaVirtual.Controllers
         /// </summary>
         /// <param name="livroPost"></param>
         /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -76,7 +79,7 @@ namespace LivrariaVirtual.Controllers
 
             var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
 
-            if (livroGetResult.Any())
+            if (!livroGetResult.Any())
                 return NotFound();
 
             return Ok(livroGetResult);
@@ -87,7 +90,7 @@ namespace LivrariaVirtual.Controllers
         /// </summary>
         /// <param name="livroPost"></param>
         /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -98,7 +101,7 @@ namespace LivrariaVirtual.Controllers
 
             var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
 
-            if (livroGetResult.Any())
+            if (!livroGetResult.Any())
                 return NotFound();
 
             return Ok(livroGetResult);
@@ -109,7 +112,7 @@ namespace LivrariaVirtual.Controllers
         /// </summary>
         /// <param name="livroPost"></param>
         /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -120,7 +123,7 @@ namespace LivrariaVirtual.Controllers
 
             var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
 
-            if (livroGetResult.Any())
+            if (!livroGetResult.Any())
                 return NotFound();
 
             return Ok(livroGetResult);
@@ -131,7 +134,7 @@ namespace LivrariaVirtual.Controllers
         /// </summary>
         /// <param name="livroPost"></param>
         /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -142,7 +145,7 @@ namespace LivrariaVirtual.Controllers
 
             var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
 
-            if (livroGetResult.Any())
+            if (!livroGetResult.Any())
                 return NotFound();
 
             return Ok(livroGetResult);

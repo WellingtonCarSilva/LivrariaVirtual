@@ -38,7 +38,7 @@ namespace LivrariaVirtual.Controllers
         {
             var pedidos = await pedidoService.ObtemPedidosCarrinho(idUsuario);
 
-            if(pedidos.Any())
+            if(!pedidos.Any())
                 return NotFound();
 
             var carrinho = mapper.Map<IEnumerable<PedidoGetResult>>(pedidos);

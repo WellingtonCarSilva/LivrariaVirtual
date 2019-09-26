@@ -15,6 +15,9 @@ namespace LivrariaVirtual
         {
             CreateMap<PedidoGetResult, PedidoDto>();
             CreateMap<Livro, LivroDto>();
+            CreateMap<LivroGetResult, Livro>();
+            CreateMap<Livro, LivroGetResult>();
+            CreateMap<LivroDto, Livro>();
         }
     }
 }

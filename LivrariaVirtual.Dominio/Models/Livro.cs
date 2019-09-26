@@ -8,7 +8,7 @@ namespace LivrariaVirtual.Dominio.Models
     {
         public int Id { get; set; }
         public int Ano { get; set; }
-        public string Nome { get; set; }
+        public string Titulo { get; set; }
         public string Genero { get; set; }
         public string Autor { get; set; }
     }

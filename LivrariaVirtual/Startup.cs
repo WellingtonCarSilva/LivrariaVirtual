@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Services;
+using Repository;
 
 namespace LivrariaVirtual
 {
@@ -41,9 +42,11 @@ namespace LivrariaVirtual
             var mappingConfig = new MapperConfiguration(cfg => {
                 cfg.AddProfile<WebMapperProfile>();
             });
-
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddDependencyRepository(Configuration.GetValue<string>("ConnectionString"));
+
             services.AddDependencyService();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

@@ -1,4 +1,5 @@
 ﻿using LivrariaVirtual.Dominio.Models;
+using LivrariaVirtual.Dominio.Repositories;
 using LivrariaVirtual.Dominio.Services;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,15 @@ namespace Services
 {
     public class LivroService : ILivroService
     {
-        public Task CadastroAsync(Livro livro)
+        private readonly ILivroRepository livroRepository;
+
+        public LivroService(ILivroRepository livroRepository)
         {
-            throw new NotImplementedException();
+            this.livroRepository = livroRepository ?? throw new ArgumentNullException(nameof(livroRepository));
+        }
+        public async Task CadastroAsync(Livro livro)
+        {
+            await livroRepository.InsereLivro(livro);
         }
 
         public Task ComentarioAsync(string comentario, int idLivro)
@@ -18,29 +25,29 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Livro>> PesquisaPorAnoAsync(int ano)
+        public async Task<IEnumerable<Livro>> PesquisaPorAnoAsync(int ano)
         {
-            throw new NotImplementedException();
+            return await livroRepository.BuscaLivroPorAno(ano);
         }
 
-        public Task<IEnumerable<Livro>> PesquisaPorAutorAsync(string autor)
+        public async Task<IEnumerable<Livro>> PesquisaPorAutorAsync(string autor)
         {
-            throw new NotImplementedException();
+            return await livroRepository.BuscaLivroPorAutor(autor);
         }
 
-        public Task<IEnumerable<Livro>> PesquisaPorGeneroAsync(string genero)
+        public async Task<IEnumerable<Livro>> PesquisaPorGeneroAsync(string genero)
         {
-            throw new NotImplementedException();
+            return await livroRepository.BuscaLivroPorGenero(genero);
         }
 
-        public Task<IEnumerable<Livro>> PesquisaPorTituloAsync(string titulo)
+        public async Task<IEnumerable<Livro>> PesquisaPorTituloAsync(string titulo)
         {
-            throw new NotImplementedException();
+            return await livroRepository.BuscaLivroPorTitulo(titulo);
         }
 
-        public Task<bool> ValidaDisponibilidadeAsync(int idLivro)
+        public async Task<bool> ValidaDisponibilidadeAsync(int idLivro)
         {
-            throw new NotImplementedException();
+            return await livroRepository.ValidaDisponibilidadeAsync(idLivro);
         }
     }
 }
