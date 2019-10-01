@@ -11,6 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddDependencyRepository(this IServiceCollection services, string connectionString )
         {
             services.AddScoped<ILivroRepository, LivroRepository>();
+            services.AddScoped<IComentarioRepository, ComentarioRepository>();
             services.AddScoped<IDbConnection>(d =>
             {
                 return new SqlConnection(connectionString);

@@ -38,7 +38,7 @@ namespace LivrariaVirtual.Controllers
         {
             var livro = mapper.Map<Livro>(livroPost);
 
-            await livroService.CadastroAsync(livro);
+            await livroService.CadastraAsync(livro);
 
             return Ok();
         }
@@ -55,10 +55,7 @@ namespace LivrariaVirtual.Controllers
         [HttpPost("{id}/Comentario")]
         public async Task<ActionResult> ComentarioAsync([FromRoute] int id, [FromBody]string comentario)
         {
-            if (string.IsNullOrEmpty(comentario))
-                throw new ArgumentNullException(nameof(comentario));
-
-            //await livroService.ComentarioAsync(comentario, id);
+            await livroService.ComentaAsync(comentario, id);
 
             return Ok();
         }
@@ -72,12 +69,14 @@ namespace LivrariaVirtual.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [HttpGet("{titulo}/titulo")]
-        public async Task<ActionResult> PesquisaPorTituloAsync([FromRoute]string titulo)
+        [HttpGet]
+        public async Task<ActionResult> PesquisaAsync([FromQuery]LivroDto livroDto)
         {
-            var livro = await livroService.PesquisaPorTituloAsync(titulo);
+            var livro = mapper.Map<Livro>(livroDto);
 
-            var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
+            var livros = await livroService.PesquisaAsync(livro);
+
+            var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livros);
 
             if (!livroGetResult.Any())
                 return NotFound();
@@ -85,70 +84,14 @@ namespace LivrariaVirtual.Controllers
             return Ok(livroGetResult);
         }
 
-        /// <summary>
-        /// Pesquisa por livros de acordo com os parâmetros preenchidos.
-        /// </summary>
-        /// <param name="livroPost"></param>
-        /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [HttpGet("{genero}/genero")]
-        public async Task<ActionResult> PesquisaPorGeneroAsync([FromRoute]string genero)
+        [HttpPost("{idLivro}/Carrinho")]
+        public async Task<ActionResult> AdicionarAoCarrinhoAsync([FromRoute] int idLivro, [FromBody] int idUsuario)
         {
-            var livro = await livroService.PesquisaPorGeneroAsync(genero);
-
-            var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
-
-            if (!livroGetResult.Any())
-                return NotFound();
-
-            return Ok(livroGetResult);
-        }
-
-        /// <summary>
-        /// Pesquisa por livros de acordo com os parâmetros preenchidos.
-        /// </summary>
-        /// <param name="livroPost"></param>
-        /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        [HttpGet("{ano}/ano")]
-        public async Task<ActionResult> PesquisaPorAnoAsync([FromRoute]int ano)
-        {
-            var livro = await livroService.PesquisaPorAnoAsync(ano);
-
-            var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
-
-            if (!livroGetResult.Any())
-                return NotFound();
-
-            return Ok(livroGetResult);
-        }
-
-        /// <summary>
-        /// Pesquisa por livros de acordo com os parâmetros preenchidos.
-        /// </summary>
-        /// <param name="livroPost"></param>
-        /// <returns> Lista com todos os livros que correspondem com os critérios enviados.</returns>
-        [ProducesResponseType(typeof(IEnumerable<LivroGetResult>), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        [HttpGet("{autor}/autor")]
-        public async Task<ActionResult> PesquisaPorAutorAsync([FromRoute]string autor)
-        {
-            var livro = await livroService.PesquisaPorAutorAsync(autor);
-
-            var livroGetResult = mapper.Map<IEnumerable<LivroGetResult>>(livro);
-
-            if (!livroGetResult.Any())
-                return NotFound();
-
-            return Ok(livroGetResult);
+            return Ok();
         }
     }
 }

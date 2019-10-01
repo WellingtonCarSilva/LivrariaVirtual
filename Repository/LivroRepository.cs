@@ -19,50 +19,43 @@ namespace Repository
             this.connection = connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
-        public async Task<IEnumerable<Livro>> BuscaLivroPorAno(int ano)
+        public async Task<IEnumerable<Livro>> BuscaLivro(Livro livro)
         {
             var parameter = new DynamicParameters();
-            parameter.Add("@Ano", ano);
 
             var query = @"SELECT Id, Ano, Titulo, Genero, Autor 
                           FROM Livro 
-                          WHERE Ano = @Ano";
+                          WHERE 1 = 1";
 
-            return await connection.QueryAsync<Livro>(query, parameter);
-        }
+            if (livro.Ano > 0)
+            {
+                query += " AND Ano = @Ano";
+                parameter.Add("@Ano", livro.Ano);
+            }
 
-        public async Task<IEnumerable<Livro>> BuscaLivroPorAutor(string autor)
-        {
-            var parameter = new DynamicParameters();
-            parameter.Add("@Autor", autor);
+            if (!string.IsNullOrEmpty(livro.Titulo))
+            {
+                query += " Titulo like '%' +  @Titulo + '%'";
+                parameter.Add("@Titulo", livro.Titulo);
+            }
 
-            var query = @"SELECT Id, Ano, Titulo, Genero, Autor 
-                          FROM Livro 
-                          WHERE Autor LIKE '%' +  @Autor + '%'";
+            if (!string.IsNullOrEmpty(livro.Genero))
+            {
+                query += " AND Genero LIKE '%' +  @Genero + '%'";
+                parameter.Add("@Genero", livro.Genero);
+            }
 
-            return await connection.QueryAsync<Livro>(query, parameter);
-        }
+            if (!string.IsNullOrEmpty(livro.Autor))
+            {
+                query += " AND Autor LIKE '%' +  @Autor + '%'";
+                parameter.Add("@Autor", livro.Autor);
+            }
 
-        public async Task<IEnumerable<Livro>> BuscaLivroPorGenero(string genero)
-        {
-            var parameter = new DynamicParameters();
-            parameter.Add("@Genero", genero);
-
-            var query = @"SELECT Id, Ano, Titulo, Genero, Autor 
-                          FROM Livro 
-                          WHERE Genero LIKE '%' +  @Genero + '%'";
-
-            return await connection.QueryAsync<Livro>(query, parameter);
-        }
-
-        public async Task<IEnumerable<Livro>> BuscaLivroPorTitulo(string titulo)
-        {
-            var parameter = new DynamicParameters();
-            parameter.Add("@Titulo", titulo);
-
-            var query = @"SELECT Id, Ano, Titulo, Genero, Autor 
-                          FROM Livro 
-                          WHERE Titulo like '%' +  @Titulo + '%'";
+            if (livro.Id > 0)
+            {
+                query += " AND Id = @Id ";
+                parameter.Add("@Id", livro.Id);
+            }
 
             return await connection.QueryAsync<Livro>(query, parameter);
         }
@@ -75,7 +68,7 @@ namespace Repository
             await connection.ExecuteAsync(query, livro);
         }
 
-        public async Task<bool> ValidaDisponibilidadeAsync(int id)
+        public async Task<bool> ValidaLivroExistenteAsync(int id)
         {
             var parameter = new DynamicParameters();
             parameter.Add("@Id", id);

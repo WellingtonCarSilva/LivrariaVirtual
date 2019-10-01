@@ -46,24 +46,7 @@ namespace LivrariaVirtual.Controllers
             return Ok(carrinho);
         }
 
-        /// <summary>
-        /// Realiza o pedido de um determinado livro.
-        /// </summary>
-        /// <param name="idLivro"></param>
-        /// <returns></returns>
-        [ProducesResponseType(201)]
-        [ProducesResponseType(typeof(string), 400)]
-        [ProducesResponseType(500)]
-        [HttpPost]
-        public async Task<ActionResult> Pedido([FromBody] int idLivro)
-        {
-            if (!await livroService.ValidaDisponibilidadeAsync(idLivro))
-                return BadRequest("Livro indisponível.");
-
-            var idPedido = await pedidoService.PedidoAsync(idLivro);
-
-            return Ok(idPedido);
-        }
+        
 
         /// <summary>
         /// Obtem detalhes da entrega do pedido

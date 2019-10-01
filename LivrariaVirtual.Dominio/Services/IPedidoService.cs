@@ -21,7 +21,7 @@ namespace LivrariaVirtual.Dominio.Services
         /// </summary>
         /// <param name="idLivro"></param>
         /// <returns>Retorna o Id do pedido.</returns>
-        Task<int> PedidoAsync(int idLivro);
+        //Task<int> InserePedidoAsync(int idLivro);
 
         /// <summary>
         /// Busca informações sobre a entrega de determinado pedido

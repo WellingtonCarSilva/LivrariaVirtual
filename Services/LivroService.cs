@@ -10,44 +10,45 @@ namespace Services
     public class LivroService : ILivroService
     {
         private readonly ILivroRepository livroRepository;
+        private readonly IComentarioRepository comentarioRepository;
 
-        public LivroService(ILivroRepository livroRepository)
+        public LivroService(ILivroRepository livroRepository, IComentarioRepository comentarioRepository)
         {
             this.livroRepository = livroRepository ?? throw new ArgumentNullException(nameof(livroRepository));
+            this.comentarioRepository = comentarioRepository 
+                ?? throw new ArgumentNullException(nameof(comentarioRepository));
         }
-        public async Task CadastroAsync(Livro livro)
+
+        public async Task CadastraAsync(Livro livro)
         {
             await livroRepository.InsereLivro(livro);
         }
 
-        public Task ComentarioAsync(string comentario, int idLivro)
+        public async Task ComentaAsync(string mensagem, int idLivro)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(mensagem))
+                throw new ArgumentNullException(nameof(mensagem));
+
+            if (!await ValidaLivroExistenteAsync(idLivro))
+                throw new ArgumentNullException(nameof(idLivro));//
+
+            var comentario = new Comentario
+            {
+                IdLivro = idLivro,
+                Mensagem = mensagem
+            };
+
+            await comentarioRepository.InsereComentario(comentario);
         }
 
-        public async Task<IEnumerable<Livro>> PesquisaPorAnoAsync(int ano)
+        public async Task<IEnumerable<Livro>> PesquisaAsync(Livro livro)
         {
-            return await livroRepository.BuscaLivroPorAno(ano);
+            return await livroRepository.BuscaLivro(livro);
         }
 
-        public async Task<IEnumerable<Livro>> PesquisaPorAutorAsync(string autor)
+        public async Task<bool> ValidaLivroExistenteAsync(int idLivro)
         {
-            return await livroRepository.BuscaLivroPorAutor(autor);
-        }
-
-        public async Task<IEnumerable<Livro>> PesquisaPorGeneroAsync(string genero)
-        {
-            return await livroRepository.BuscaLivroPorGenero(genero);
-        }
-
-        public async Task<IEnumerable<Livro>> PesquisaPorTituloAsync(string titulo)
-        {
-            return await livroRepository.BuscaLivroPorTitulo(titulo);
-        }
-
-        public async Task<bool> ValidaDisponibilidadeAsync(int idLivro)
-        {
-            return await livroRepository.ValidaDisponibilidadeAsync(idLivro);
+            return await livroRepository.ValidaLivroExistenteAsync(idLivro);
         }
     }
 }
