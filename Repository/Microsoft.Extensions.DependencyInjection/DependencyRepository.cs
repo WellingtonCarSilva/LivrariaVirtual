@@ -12,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<ILivroRepository, LivroRepository>();
             services.AddScoped<IComentarioRepository, ComentarioRepository>();
+            services.AddScoped<ICarrinhoRepository, CarrinhoRepository>();
             services.AddScoped<IDbConnection>(d =>
             {
                 return new SqlConnection(connectionString);

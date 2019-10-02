@@ -1,4 +1,5 @@
 ﻿using LivrariaVirtual.Dominio.Dto;
+using LivrariaVirtual.Dominio.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,8 @@ namespace LivrariaVirtual.Dominio.Services
         /// </summary>
         /// <param name="idUsuario"></param>
         /// <returns>Retorna o Id do pedido.</returns>
-        Task<IEnumerable<ItemCarrinhoDto>> ObtemItensCarrinhoAsync(int idUsuario);
+        Task<ItemCarrinhoDto> ObtemItensCarrinhoAsync(int idUsuario);
+
+        Task RealizaPagamentoAsync(Pagamento pagamento);
     }
 }

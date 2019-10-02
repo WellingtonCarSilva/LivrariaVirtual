@@ -12,6 +12,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<ILivroService, LivroService>();
             services.AddScoped<IPedidoService, PedidoService>();
+            services.AddScoped<ICarrinhoService, CarrinhoService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             
             return services;
         }

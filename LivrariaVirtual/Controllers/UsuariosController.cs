@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
+using LivrariaVirtual.Dominio.Models;
 using LivrariaVirtual.Dominio.Services;
 using LivrariaVirtual.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +15,16 @@ namespace LivrariaVirtual.Controllers
         private readonly ICarrinhoService carrinhoService;
         private readonly ILivroService livroService;
         private readonly IUsuarioService usuarioService;
+        private readonly IMapper mapper;
+
 
         public UsuariosController(ICarrinhoService carrinhoService, ILivroService livroService,
-            IUsuarioService usuarioService)
+            IUsuarioService usuarioService, IMapper mapper)
         {
             this.carrinhoService = carrinhoService ?? throw new ArgumentNullException(nameof(carrinhoService));
             this.livroService = livroService ?? throw new ArgumentNullException(nameof(livroService));
             this.usuarioService = usuarioService ?? throw new ArgumentNullException(nameof(usuarioService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [ProducesResponseType(200)]
@@ -28,9 +33,9 @@ namespace LivrariaVirtual.Controllers
         [HttpGet("{idUsuario}/Carrinho")]
         public async Task<IActionResult> ObtemCarrinho([FromRoute]int idUsuario)
         {
-            await carrinhoService.ObtemItensCarrinhoAsync(idUsuario);
+            var retorno = await carrinhoService.ObtemItensCarrinhoAsync(idUsuario);
 
-            return Ok();
+            return Ok(retorno);
         }
 
         /// <summary>
@@ -59,6 +64,14 @@ namespace LivrariaVirtual.Controllers
         public async Task<ActionResult> ValidaUsuarioAsync([FromRoute]LoginPost loginPost)
         {
             return Ok(await usuarioService.ValidaUsuarioAsync(loginPost.Cpf, loginPost.Senha));
+        }
+
+        [HttpPut("Pagar")]
+        public async Task<IActionResult> PagarPedido([FromBody]PagamentoPost pagamentoPost)
+        {
+            var pagamento = mapper.Map<Pagamento>(pagamentoPost);
+            await carrinhoService.RealizaPagamentoAsync(pagamento);
+            return Ok();
         }
     }
 }

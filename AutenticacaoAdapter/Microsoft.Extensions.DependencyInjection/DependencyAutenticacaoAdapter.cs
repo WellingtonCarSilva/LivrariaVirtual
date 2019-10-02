@@ -16,9 +16,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped(serviceProvider =>
             {
-                var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
-                var httpClient = httpClientFactory.CreateClient("");
-                httpClient.BaseAddress = new Uri(urlAutenticacao);
+                //var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+                //var httpClient = httpClientFactory.CreateClient("");
+                var httpClient = new HttpClient
+                {
+                    BaseAddress = new Uri(urlAutenticacao)
+                };
 
                 return RestService.For<IAutenticacao>(httpClient);
             });

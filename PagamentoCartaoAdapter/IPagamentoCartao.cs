@@ -9,7 +9,7 @@ namespace PagamentoCartaoAdapter
 {
     public interface IPagamentoCartao
     {
-        [Put("Transacoes")]
+        [Put("/Transacoes")]
         Task<Guid> RealizaPagamento([Body]TransacaoPut transacaoPut);
     }
 }

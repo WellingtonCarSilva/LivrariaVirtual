@@ -1,26 +1,28 @@
-﻿using AutenticacaoAdapter;
-using LivrariaVirtual.Dominio.Adapters;
+﻿using LivrariaVirtual.Dominio.Adapters;
+using PagamentoCartaoAdapter;
 using Refit;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class DependencyPagamentoCartaoAdapter
     {
-        public static IServiceCollection AddDependencyAutenticacaoAdapter(this IServiceCollection services, string urlAutenticacao)
+        public static IServiceCollection AddDependencyPagamentoCartaoAdapter(this IServiceCollection services, string urlPagamento)
         {
-            services.AddScoped<IAutenticacaoApiAdapter, AutenticacaoApiAdapter>();
+            services.AddScoped<IPagamentoCartaoApiAdapter, PagamentoCartaoApiAdapter>();
 
             services.AddScoped(serviceProvider =>
             {
-                var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
-                var httpClient = httpClientFactory.CreateClient("");
-                httpClient.BaseAddress = new Uri(urlAutenticacao);
+                //var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+                //httpClientFactory.CreateClient("");
 
-                return RestService.For<IAutenticacao>(httpClient);
+                var httpClient = new HttpClient
+                {
+                    BaseAddress = new Uri(urlPagamento)
+                };
+
+                return RestService.For<IPagamentoCartao>(httpClient);
             });
 
             return services;

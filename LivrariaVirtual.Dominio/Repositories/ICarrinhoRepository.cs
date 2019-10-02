@@ -9,8 +9,9 @@ namespace LivrariaVirtual.Dominio.Repositories
     public interface ICarrinhoRepository
     {
         Task<Carrinho> BuscaCarrinhoAtivoPorUsuarioAsync(int idUsuario);
-        Task<IEnumerable<ItemCarrinho>> BuscaItensCarrinhoAsync(int idUsuario);
-        Task AdicionaItemCarrinhoUsuarioAsync(int idUsuario, int idCarrinho, int idLivro);
+        Task<IEnumerable<ItemCarrinho>> BuscaItensCarrinhoAsync(int IdCarrinho);
+        Task AdicionaItemCarrinhoUsuarioAsync(int idCarrinho, int idLivro);
         Task CriarCarrinhoUsuario(Carrinho carrinho);
+        Task FinalizaCarrinho(int idCarrinho);
     }
 }

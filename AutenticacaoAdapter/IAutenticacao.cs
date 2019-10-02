@@ -9,7 +9,7 @@ namespace AutenticacaoAdapter
 {
     public interface IAutenticacao
     {
-        [Post("authenticate")]
+        [Post("/users/authenticate")]
         Task<UserPostResult> Autenticacao([Body]UserPost userPost);
     }
 }
