@@ -12,6 +12,6 @@ namespace LivrariaVirtual.Dominio.Repositories
         Task<IEnumerable<ItemCarrinho>> BuscaItensCarrinhoAsync(int IdCarrinho);
         Task AdicionaItemCarrinhoUsuarioAsync(int idCarrinho, int idLivro);
         Task CriarCarrinhoUsuario(Carrinho carrinho);
-        Task FinalizaCarrinho(int idCarrinho);
+        Task FinalizaCarrinho(int idCarrinho, Guid idTransacao);
     }
 }

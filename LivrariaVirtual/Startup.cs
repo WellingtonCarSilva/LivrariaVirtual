@@ -50,7 +50,8 @@ namespace LivrariaVirtual
             services.AddDependencyService();
 
             services.AddDependencyAutenticacaoAdapter(Configuration.GetValue<string>("UrlAutenticacao"));
-            services.AddDependencyPagamentoCartaoAdapter(Configuration.GetValue<string>("UrlAutenticacao"));
+            services.AddDependencyPagamentoCartaoAdapter(Configuration.GetValue<string>("UrlPagamento"));
+            services.AddDependencyAuditoriaAdapter(Configuration.GetValue<string>("UrlAuditoria"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

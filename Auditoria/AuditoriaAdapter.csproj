@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="Refit" Version="4.7.51" />
+    <PackageReference Include="refit" Version="4.7.51" />
   </ItemGroup>
 
   <ItemGroup>

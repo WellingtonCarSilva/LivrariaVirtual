@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Auditoria\AuditoriaAdapter.csproj" />
     <ProjectReference Include="..\AutenticacaoAdapter\AutenticacaoAdapter.csproj" />
     <ProjectReference Include="..\LivrariaVirtual.Dominio\LivrariaVirtual.Dominio.csproj" />
     <ProjectReference Include="..\PagamentoCartaoAdapter\PagamentoCartaoAdapter.csproj" />

@@ -5,6 +5,7 @@ using LivrariaVirtual.Dominio.Models;
 using LivrariaVirtual.Dominio.Services;
 using LivrariaVirtual.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Refit;
 
 namespace LivrariaVirtual.Controllers
 {
@@ -35,6 +36,9 @@ namespace LivrariaVirtual.Controllers
         {
             var retorno = await carrinhoService.ObtemItensCarrinhoAsync(idUsuario);
 
+            if (retorno == null)
+                return NotFound();
+
             return Ok(retorno);
         }
 
@@ -47,12 +51,12 @@ namespace LivrariaVirtual.Controllers
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(500)]
         [HttpPost("{idUsuario}/ItemCarrinho")]
-        public async Task<ActionResult> AdicionaItemCarrinhoAsync([FromRoute]int idUsuario, [FromBody] int idLivro, [FromHeader] string token)
+        public async Task<ActionResult> AdicionaItemCarrinhoAsync([FromRoute]int idUsuario, [FromBody] ItemCarrinhoPost itemCarrinhoPost, [FromHeader] string token)
         {
-            if (!await livroService.ValidaLivroExistenteAsync(idLivro))
+            if (!await livroService.ValidaLivroExistenteAsync(itemCarrinhoPost.IdLivro))
                 return BadRequest("Livro indisponível.");
 
-            await carrinhoService.InsereItemCarrinhoAsync(idLivro, idUsuario);
+            await carrinhoService.InsereItemCarrinhoAsync(itemCarrinhoPost.IdLivro, idUsuario);
 
             return Ok();
         }
@@ -63,7 +67,17 @@ namespace LivrariaVirtual.Controllers
         [HttpGet("Autenticacao")]
         public async Task<ActionResult> ValidaUsuarioAsync([FromRoute]LoginPost loginPost)
         {
-            return Ok(await usuarioService.ValidaUsuarioAsync(loginPost.Cpf, loginPost.Senha));
+            try
+            {
+                return Ok(await usuarioService.ValidaUsuarioAsync(loginPost.Cpf, loginPost.Senha));
+            }
+            catch (ApiException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return NotFound();
+
+                return BadRequest("Falha ao validar usuário.");
+            }
         }
 
         [HttpPut("Pagar")]

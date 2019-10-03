@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{C45CB702-E144-419A-B3E0-53BFA58540BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutenticacaoAdapter", "AutenticacaoAdapter\AutenticacaoAdapter.csproj", "{99926C63-80EB-48B3-B7DD-274748693AF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutenticacaoAdapter", "AutenticacaoAdapter\AutenticacaoAdapter.csproj", "{99926C63-80EB-48B3-B7DD-274748693AF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PagamentoCartaoAdapter", "PagamentoCartaoAdapter\PagamentoCartaoAdapter.csproj", "{7158754A-5166-4D94-823C-5BD8901A62E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PagamentoCartaoAdapter", "PagamentoCartaoAdapter\PagamentoCartaoAdapter.csproj", "{7158754A-5166-4D94-823C-5BD8901A62E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditoriaAdapter", "Auditoria\AuditoriaAdapter.csproj", "{AE76F787-13E3-4C74-AA8F-473347C08E66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{7158754A-5166-4D94-823C-5BD8901A62E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7158754A-5166-4D94-823C-5BD8901A62E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7158754A-5166-4D94-823C-5BD8901A62E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE76F787-13E3-4C74-AA8F-473347C08E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE76F787-13E3-4C74-AA8F-473347C08E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE76F787-13E3-4C74-AA8F-473347C08E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE76F787-13E3-4C74-AA8F-473347C08E66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

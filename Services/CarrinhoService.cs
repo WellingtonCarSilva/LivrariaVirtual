@@ -15,12 +15,15 @@ namespace Services
         private readonly ICarrinhoRepository carrinhoRepository;
         private readonly ILivroService livroService;
         private readonly IPagamentoCartaoApiAdapter pagamentoAdapter;
+        private readonly IAuditoriaApiAdapter auditoriaApiAdapter;
 
-        public CarrinhoService(ICarrinhoRepository carrinhoRepository, ILivroService livroService, IPagamentoCartaoApiAdapter pagamentoAdapter)
+        public CarrinhoService(ICarrinhoRepository carrinhoRepository, ILivroService livroService, 
+            IPagamentoCartaoApiAdapter pagamentoAdapter, IAuditoriaApiAdapter auditoriaApiAdapter)
         {
             this.carrinhoRepository = carrinhoRepository ?? throw new ArgumentNullException(nameof(carrinhoRepository));
             this.livroService = livroService ?? throw new ArgumentNullException(nameof(livroService));
             this.pagamentoAdapter = pagamentoAdapter ?? throw new ArgumentNullException(nameof(pagamentoAdapter));
+            this.auditoriaApiAdapter = auditoriaApiAdapter ?? throw new ArgumentNullException(nameof(auditoriaApiAdapter));
         }
 
         public async Task InsereItemCarrinhoAsync(int idLivro, int idUsuario)
@@ -44,6 +47,10 @@ namespace Services
         public async Task<ItemCarrinhoDto> ObtemItensCarrinhoAsync(int idUsuario)
         {
             var carrinho = await carrinhoRepository.BuscaCarrinhoAtivoPorUsuarioAsync(idUsuario);
+
+            if (carrinho == null)
+                return null;
+
             return await ObtemCarrinhoAsync(carrinho.Id);
         }
 
@@ -57,9 +64,10 @@ namespace Services
             };
 
             var itensCarinho = await ObtemCarrinhoAsync(pagamento.IdCarrinho);
-            await pagamentoAdapter.RealizaPagamentoAsync(cartao, itensCarinho.ValorTotal);
+            var idTransacao = await pagamentoAdapter.RealizaPagamentoAsync(cartao, itensCarinho.ValorTotal);
 
-            await FinalizaCarrinho(pagamento.IdCarrinho);
+            await FinalizaCarrinho(pagamento.IdCarrinho, idTransacao);
+            await auditoriaApiAdapter.AuditaSucessoTransacao("Pagamento", "1", DateTime.Now);
         }
 
         private async Task<ItemCarrinhoDto> ObtemCarrinhoAsync(int idCarrinho)
@@ -73,7 +81,7 @@ namespace Services
 
             foreach (var item in itemCarrinho)
             {
-                var livro = await livroService.PesquisaAsync(new Livro { Id = item.Id });
+                var livro = await livroService.PesquisaAsync(new Livro { Id = item.IdLivro });
                 itensCarrinho.Livros.Add(livro.FirstOrDefault());
                 itensCarrinho.IdCarrinho = item.IdCarrinho;
                 itensCarrinho.ValorTotal += livro.FirstOrDefault()?.Valor ?? 0.0;
@@ -82,9 +90,9 @@ namespace Services
             return itensCarrinho;
         }
 
-        private async Task FinalizaCarrinho(int idCarrinho)
+        private async Task FinalizaCarrinho(int idCarrinho, Guid idTransacao)
         {
-            await carrinhoRepository.FinalizaCarrinho(idCarrinho);
+            await carrinhoRepository.FinalizaCarrinho(idCarrinho, idTransacao);
         }
     }
 }

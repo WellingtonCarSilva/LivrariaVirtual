@@ -33,12 +33,14 @@ namespace Repository
         {
             var parameter = new DynamicParameters();
             parameter.Add("@IdUsuario", idUsuario);
+            parameter.Add("@Ativo", true);
 
             var query = @"SELECT Id, IdUsuario, Ativo
                           FROM Carrinho 
-                          WHERE IdUsuario = @IdUsuario";
+                          WHERE IdUsuario = @IdUsuario
+                          AND Ativo = @Ativo";
 
-            return await connection.QueryFirstAsync<Carrinho>(query, parameter);
+            return await connection.QueryFirstOrDefaultAsync<Carrinho>(query, parameter);
         }
 
         public async Task<IEnumerable<ItemCarrinho>> BuscaItensCarrinhoAsync(int idCarrinho)
@@ -56,20 +58,22 @@ namespace Repository
         public async Task CriarCarrinhoUsuario(Carrinho carrinho)
         {
             var query = @"insert into carrinho
-                          values(@IdUsuario, @Ativo)";
+                          values(@IdUsuario, @Ativo, @IdTransacao)";
 
             await connection.ExecuteAsync(query, carrinho);
         }
 
-        public async Task FinalizaCarrinho(int idCarrinho)
+        public async Task FinalizaCarrinho(int idCarrinho, Guid idTransacao)
         {
             var parameter = new DynamicParameters();
             parameter.Add("@Ativo", false);
             parameter.Add("@IdCarrinho", idCarrinho);
+            parameter.Add("@IdTransacao", idTransacao);
 
             var query = @"update carrinho
-                          set Ativo = @Ativo
-                          where IdCarrinho @IdCarrinho";
+                          set Ativo = @Ativo,
+                          idTransacao = @IdTransacao
+                          where Id = @IdCarrinho";
 
             await connection.ExecuteAsync(query, parameter);
         }

@@ -8,6 +8,6 @@ namespace LivrariaVirtual.Dominio.Adapters
 {
     public interface IPagamentoCartaoApiAdapter
     {
-        Task RealizaPagamentoAsync(Cartao cartao, double valor);
+        Task<Guid> RealizaPagamentoAsync(Cartao cartao, double valor);
     }
 }

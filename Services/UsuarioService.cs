@@ -1,6 +1,7 @@
 ﻿using LivrariaVirtual.Dominio.Adapters;
 using LivrariaVirtual.Dominio.Dto;
 using LivrariaVirtual.Dominio.Services;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Text;

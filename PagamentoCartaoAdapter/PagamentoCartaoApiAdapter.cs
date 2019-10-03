@@ -17,7 +17,7 @@ namespace PagamentoCartaoAdapter
             this.pagamentoCartao = pagamentoCartao ?? throw new ArgumentNullException(nameof(pagamentoCartao));
         }
 
-        public async Task RealizaPagamentoAsync(Cartao cartao, double valor)
+        public async Task<Guid> RealizaPagamentoAsync(Cartao cartao, double valor)
         {
             var transacao = new TransacaoPut
             {
@@ -27,7 +27,7 @@ namespace PagamentoCartaoAdapter
                 Valor = valor
             };
 
-            await pagamentoCartao.RealizaPagamento(transacao);
+            return await pagamentoCartao.RealizaPagamento(transacao);
         }
     }
 }

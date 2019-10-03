@@ -18,7 +18,7 @@ namespace LivrariaVirtual
             CreateMap<LivroGetResult, Livro>();
             CreateMap<Livro, LivroGetResult>();
             CreateMap<LivroDto, Livro>();
-            CreateMap<Pagamento, PagamentoPost>();
+            CreateMap<PagamentoPost, Pagamento>();
         }
     }
 }
